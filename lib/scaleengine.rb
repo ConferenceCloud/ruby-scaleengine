@@ -1,18 +1,17 @@
-require "httparty"
+require "rest-client"
 require "json"
-require "rubybrite/configuration"
-require "rubybrite/response"
-require "rubybrite/request"
+require_relative "scaleengine/configuration"
+require_relative "scaleengine/response"
+require_relative "scaleengine/request"
 
 class ScaleEngineAPI
 
-  def record_control(params)
-    if not params.is_a?(Hash)
-      # Invalid params type. Not a hash
-      raise InvalidParamsException.new("Params must be hash")
-    end
-
-  end
+  # def record_control(params)
+  #   if not params.is_a?(Hash)
+  #     # Invalid params type. Not a hash
+  #     raise InvalidParamsException.new("Params must be hash")
+  #   end
+  # end
 
   def method_missing(method, *args)
     params = args[0].is_a?(Hash) ? args[0] : {}

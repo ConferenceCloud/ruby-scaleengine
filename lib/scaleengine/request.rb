@@ -1,7 +1,8 @@
+require 'json'
+require 'base64'
+
 class ScaleEngineAPI
   class Request
-    include HTTParty
-    base_uri Configuration.api_end_point
 
     attr_accessor :path, :query
 
@@ -10,32 +11,39 @@ class ScaleEngineAPI
       @query = query
     end
 
-    def get
-      response = self.class.get(path, query: query).body
-      Response.new(response)
-    end
-
-    def post
-      response = self.class.post(path, query: query).body
-      Response.new(response)
-    end
-
-    def delete
-      response = self.class.delete(path, query: query).body
+    def send
+      body = prepare_request
+      response = RestClient.post Configuration.api_end_point, body
       Response.new(response)
     end
 
     def method_missing(method, *args)
-      query = @query
-      query[:command] += ".#{method}"
+      query_new = query
+      query_new[:command] += ".#{method}"
       
       params = args[0].is_a?(Hash) ? args[0] : {}
       params.delete(:command)
       params.keys.each do |x|
-        query[x] = params[x]
+        query_new[x] = params[x]
       end
       
-      Request.new(route, params)
+      Request.new("", query_new)
+    end
+
+    def prepare_request
+      query[:timestamp] = Time.now.to_i
+      query[:signature] = Base64.strict_encode64(request_signature)
+      body = {:json => JSON.generate(query), :multipart => true}
+      #query
+    end
+
+    def request_signature
+      params = query
+      json_params = JSON.generate(params)
+
+      # Compute new SHA256 HMAC
+      digest = OpenSSL::Digest::SHA256.new
+      OpenSSL::HMAC.digest(digest, Configuration.secret_key, json_params)
     end
   end
 end
