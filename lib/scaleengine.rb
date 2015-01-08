@@ -6,24 +6,22 @@ require "rubybrite/request"
 
 class ScaleEngineAPI
 
-  def record_control
-  end
+  def record_control(params)
+    if not params.is_a?(Hash)
+      # Invalid params type. Not a hash
+      raise InvalidParamsException.new("Params must be hash")
+    end
 
-  def command(command)
   end
 
   def method_missing(method, *args)
     params = args[0].is_a?(Hash) ? args[0] : {}
-    path = ""
-    if not params[:id]
-    	path = "/#{method}/?token=#{@access_token}"
-    else
-    	# raise MissingIdException.new("#{method.capitalize} id can not be empty.") unless params[:id]
-    	path = "/#{method}/#{params.delete(:id)}?token=#{@access_token}"
-    end
-    Request.new(path, params)
+    params[:command] = "#{method}"
+    params[:api_key] = Configuration.api_key
+    Request.new("", params)
   end
 
   class APIException < ::Exception; end
   class MissingIdException < APIException; end
+  class InvalidParamsException < APIException; end
 end
