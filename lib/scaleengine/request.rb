@@ -3,7 +3,6 @@ require 'base64'
 
 class ScaleEngineAPI
   class Request
-
     attr_accessor :path, :query
 
     def initialize(path = "", query = {})
@@ -13,7 +12,7 @@ class ScaleEngineAPI
 
     def send
       body = prepare_request
-      response = RestClient.post Configuration.api_end_point, body
+      response = RestClient.post path, body
       Response.new(response)
     end
 
@@ -27,14 +26,13 @@ class ScaleEngineAPI
         query_new[x] = params[x]
       end
       
-      Request.new("", query_new)
+      Request.new(path, query_new)
     end
 
     def prepare_request
       query[:timestamp] = Time.now.to_i
       query[:signature] = Base64.strict_encode64(request_signature)
       body = {:json => JSON.generate(query), :multipart => true}
-      #query
     end
 
     def request_signature
