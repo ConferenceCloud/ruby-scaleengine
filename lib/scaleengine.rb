@@ -1,8 +1,8 @@
 require "rest-client"
 require "json"
-require_relative "scaleengine/configuration"
-require_relative "scaleengine/response"
-require_relative "scaleengine/request"
+require "scaleengine/configuration"
+require "scaleengine/response"
+require "scaleengine/request"
 
 class ScaleEngineAPI
 
