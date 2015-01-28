@@ -2,7 +2,7 @@
 ## No Unit/Functional tests present
 ## THIS FILE IS JUST A TEMPORARY TEST SCRIPT
 require "logger"
-require_relative "../lib/scaleengine"
+require "scaleengine"
 
 logger = Logger.new(STDOUT)
 logger.level = Logger::DEBUG
