@@ -6,6 +6,7 @@ require "scaleengine/version"
 Gem::Specification.new do |s|
   s.name        = "ruby-scaleengine"
   s.version     = ScaleEngineAPI::VERSION
+  s.licenses    = ['MIT']
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["John-Alan Simmons"]
   s.email       = ["johnalan@conferencecloud.co"]
