@@ -13,12 +13,15 @@ ScaleEngineAPI::Configuration.username = ENV["SCALEENGINE_USERNAME"]
 ScaleEngineAPI::Configuration.cdn = ENV["SCALEENGINE_CDN"]
 
 se = ScaleEngineAPI.new
-logger.debug se.sevu
 req = se.sevu.addstreamuser({
 	app: 'conferencecloud-origin', 
-	stream: "conferencecloud-test", 
+	stream: "conferencecloud-tester", 
 	user: "conferencecloud", 
-	pass: "unique_random_string_per_request"
+	pass: (0...16).map { (65 + rand(26)).chr }.join # Random 16 character string
 })
-logger.debug req
+# req = se.sevu.removestreamuser({
+# 	app: 'conferencecloud-origin',
+# 	stream: "conferencecloud-test",
+# 	user: "conferencecloud"
+# })
 logger.debug req.send

@@ -11,7 +11,7 @@ class ScaleEngineAPI
       end
 
       def record_control_end_point
-        "http://#{:username}-rec.vorigin.scaleengine.net:8086/serecordcontrols"
+        "http://#{self.username}-rec.vorigin.scaleengine.net:8086/serecordcontrols"
       end
     end
   end
